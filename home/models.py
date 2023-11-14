@@ -36,13 +36,19 @@ class Section(models.Model):
 
 
 class FormPage(models.Model):
+    name = models.CharField(max_length=30, default='')
     title = models.CharField(max_length=100)
     description = models.TextField()
-    questions = models.ManyToManyField(Question)
+    questions = models.ManyToManyField(Question, blank=True)
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.name:
+            self.name = self.title[:30]
+        super().save(force_insert, force_update, using, update_fields)
 
 
 class Assessment(models.Model):
@@ -61,7 +67,7 @@ class Answer(models.Model):
 
 
 class Response(models.Model):
-    current_page = models.ForeignKey('FormPage', on_delete=models.CASCADE)
+    current_page = models.ForeignKey('FormPage', on_delete=models.CASCADE, blank=True, null=True)
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% block nav %}{% endblock %}
+    <div class="vh-100">
+        <h4 class="p-5">Waiting for result calculation logic...</h4>
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+{% endblock %}

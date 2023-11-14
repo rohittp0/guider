@@ -6,37 +6,68 @@
 {% endblock %}
 
 {% block content %}
+    {% block nav %}{% endblock %}
 
     <div class="row gradient-background">
         <div class="col-3">
             <h3 class="m-3 text-uppercase text-bold text-center">Guider</h3>
         </div>
         <div class="col-9">
-            <div class="w-100 bg-primary-dark">
-                <div class="w-100 caret-container" style="grid-template-columns: repeat(4, 1fr)">
+            <div class="w-100 bg-primary-500">
+                <div class="w-100 caret-container" style="grid-template-columns: repeat({{ num_titles }}, 1fr)">
+                    {% for title in titles %}
+                        <div class="caret-nav">
+                            <p class="text-white m-0 text-bold">{{ title }}</p>
+                        </div>
+                    {% endfor %}
                     <div class="caret-nav">
-                        <p class="text-white m-0 text-bold">Home</p>
-                    </div>
-                    <div class="caret-nav">
-                        <p class="text-white m-0 text-bold">Home</p>
-                    </div>
-                    <div class="caret-nav">
-                        <p class="text-white m-0 text-bold">Home</p>
+                        <p class="text-white m-0 text-bold">Results</p>
                     </div>
                 </div>
-                <div class="p-5 text-white">
-                    <h1>About You</h1>
-                    <p>We’re going to get started by learning a bit about you and your organization. This information
-                        will
-                        help us understand how to improve this tool in the future and inform the resources we develop to
-                        support organizations working to develop their data practice.</p>
+                <div class="py-5 {% if error %}pt-0{% endif %} text-white">
+                    {% if error %}
+                        <p class="error-banner p-5 py-4 mb-4">{{ error }}</p>
+                    {% endif %}
+                    <h1 class="px-5">{{ page_title }}</h1>
+                    <p class="px-5">{{ description }}</p>
                 </div>
             </div>
-            <form class="bg-white w-100 text-gray small">
-                <div class="border-bottom p-5">
-                    <p>Question 1</p>
-                    <h3>First up, what's your first name?</h3>
-                    <input type="text">
+            <form class="bg-white w-100 text-gray small" action="" method="post">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="border-bottom p-5">
+                        <p class="mb-4">Question {{ forloop.counter }} </p>
+                        <h3 class="mb-4">{{ question.question_text }}</h3>
+
+                        {% if question.category == "sa" or question.category == "la" %}
+                            <input type="text" name="{{ question.id }}" class="form-control p-3" required>
+                        {% elif question.category == "tf" %}
+                            <!-- Structure for true/false -->
+                            <div class="choice-item p-3 border my-2">
+                                <input type="checkbox" id="option-true-{{ question.id }}" name="{{ question.id }}"
+                                       value="true">
+                                <label for="option-true-{{ question.id }}">Yes</label>
+                            </div>
+                        {% else %}
+                            <!-- Combined structure for 'ss' and 'ms' -->
+                            <ul class="choice-list">
+                                {% for option in question.options_set.all %}
+                                    <li class="choice-item p-3 border my-2">
+                                        <input type="{% if question.category == 'ss' %}radio{% elif question.category == 'ms' %}checkbox{% endif %}"
+                                               id="option-{{ option.id }}"
+                                               name="{{ question.id }}{% if question.category == 'ms' %}[]{% endif %}"
+                                               value="{{ option.id }}"
+                                                {% if question.category == 'ss' %}required{% endif %}
+                                        >
+                                        <label for="option-{{ option.id }}">{{ option.option_text }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="d-flex w-100 justify-content-center align-items-center">
+                    <button type="submit" class="button my-5 px-5 py-3 text-white bg-blue-500">Submit</button>
                 </div>
             </form>
         </div>
