@@ -51,3 +51,18 @@ class Assessment(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Answer(models.Model):
+    question = models.ForeignKey('Question', on_delete=models.CASCADE)
+    response = models.ForeignKey('Response', on_delete=models.CASCADE)
+    answer_text = models.TextField()
+
+
+class Response(models.Model):
+    current_page = models.ForeignKey('FormPage', on_delete=models.CASCADE)
+    assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.assessment.name + ' - ' + self.current_page.title

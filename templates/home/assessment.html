@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/assessment.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="row gradient-background">
+        <div class="col-3">
+            <h3 class="m-3 text-uppercase text-bold text-center">Guider</h3>
+        </div>
+        <div class="col-9">
+            <div class="w-100 bg-primary-dark">
+                <div class="w-100 caret-container" style="grid-template-columns: repeat(4, 1fr)">
+                    <div class="caret-nav">
+                        <p class="text-white m-0 text-bold">Home</p>
+                    </div>
+                    <div class="caret-nav">
+                        <p class="text-white m-0 text-bold">Home</p>
+                    </div>
+                    <div class="caret-nav">
+                        <p class="text-white m-0 text-bold">Home</p>
+                    </div>
+                </div>
+                <div class="p-5 text-white">
+                    <h1>About You</h1>
+                    <p>We’re going to get started by learning a bit about you and your organization. This information
+                        will
+                        help us understand how to improve this tool in the future and inform the resources we develop to
+                        support organizations working to develop their data practice.</p>
+                </div>
+            </div>
+            <form class="bg-white w-100 text-gray small">
+                <div class="border-bottom p-5">
+                    <p>Question 1</p>
+                    <h3>First up, what's your first name?</h3>
+                    <input type="text">
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block script %}
+{% endblock %}
