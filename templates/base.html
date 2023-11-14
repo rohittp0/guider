@@ -31,9 +31,56 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-<div>
-    {% block content %}{% endblock %}
-</div>
+{% block nav %}
+    <div data-role="Header" class="header-header">
+        <nav class="header-nav">
+            <div class="header-container">
+                <a href="index.html" class="header-navlink">Guider</a>
+                <div class="header-menu">
+                    <a href="#" class="header-navlink1 Large">Home</a>
+                    <a href="#about" class="header-navlink1 Large">About</a>
+                    <a href="#impact" class="header-navlink1 Large">Impact</a>
+                </div>
+                <div class="header-container1">
+                    <div data-role="BurgerMenu" class="header-burger-menu">
+                        <img alt="logo" src="{% static 'fav/apple-touch-icon.png' %}" class="header-icon">
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock nav %}
+{% block content %}{% endblock %}
+{% block footer %}
+    <footer class="footer-footer">
+        <div class="footer-container">
+            <div class="footer-container1">
+                <span class="footer-text">Guider</span>
+            </div>
+            <div class="footer-container2">
+                <div class="footer-container3">
+                    <span class="footer-text01 Large">Company</span>
+                    <span class="footer-text02 Large">About Us</span>
+                    <span class="footer-text03 Large">Careers</span>
+                    <span class="footer-text04 Large">Press</span>
+                </div>
+                <div class="footer-container4">
+                    <span class="footer-text05 Large">Pages</span>
+                    <span class="footer-text06 Large">Login</span>
+                    <span class="footer-text07 Large">Register</span>
+                    <span class="footer-text08 Large">About</span>
+                </div>
+                <div class="footer-container5">
+                    <span class="footer-text09 Large">Products</span>
+                    <span class="footer-text10 Large">Free</span>
+                    <span class="footer-text11 Large">PRO</span>
+                    <span class="footer-text12 Large">Latest</span>
+                </div>
+            </div>
+        </div>
+        <img alt="image" src="{% static 'home/waves-white.svg' %}" class="footer-image"/>
+    </footer>
+{% endblock %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
