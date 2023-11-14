@@ -6,8 +6,34 @@
 {% endblock %}
 
 {% block content %}
-    <div class="home-container">
-
+    <div class="assessments-container">
+        {% for assessment in assessments %}
+            <div class="blog-card-container">
+                <img
+                        alt="image"
+                        src="{{ assessment.cover_image.url }}"
+                        class="blog-card-image"
+                >
+                <h5 class="blog-card-text"><span>{{ assessment.name }}</span></h5>
+                <span>
+          <span>
+            {{ assessment.description }}
+          </span>
+        </span>
+                <div class="next-button-container">
+                    <a href="{% url 'assessment' assessment_id=assessment.id response_id=-1 %}">
+                        <button class="next-button-button button">
+                            <span class="next-button-text"><span>Start</span></span>
+                            <svg viewBox="0 0 1024 1024" class="next-button-icon">
+                                <path
+                                        d="M512 170l342 342-342 342-60-60 238-240h-520v-84h520l-238-240z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock content %}
 

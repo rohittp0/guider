@@ -48,6 +48,7 @@ class FormPage(models.Model):
 class Assessment(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
+    cover_image = models.ImageField()
 
     def __str__(self):
         return self.name
