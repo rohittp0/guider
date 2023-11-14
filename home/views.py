@@ -34,3 +34,8 @@ def assessment(request, assessment_id, response_id):
     }
 
     return render(request, 'home/assessment.html', context=context)
+
+
+def assessments(request):
+    objs = Assessment.objects.all()
+    return render(request, 'home/assessments.html', context={"assessments": objs})
