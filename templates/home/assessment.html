@@ -8,11 +8,11 @@
 {% block content %}
     {% block nav %}{% endblock %}
 
-    <div class="row gradient-background">
-        <div class="col-3">
-            <h3 class="m-3 text-uppercase text-bold text-center">Guider</h3>
+    <div class="row">
+        <div class="col-lg-3 col-sm-1 gradient-background">
+            <h3 class="m-3 text-uppercase text-bold text-center text-white">Guider</h3>
         </div>
-        <div class="col-9">
+        <div class="col-lg-9 col-sm-11 p-lg-0">
             <div class="w-100 bg-primary-500">
                 <div class="w-100 caret-container" style="grid-template-columns: repeat({{ num_titles }}, 1fr)">
                     {% for title in titles %}

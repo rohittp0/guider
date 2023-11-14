@@ -5,8 +5,10 @@
 }
 
 .gradient-background {
+    padding: 0;
+    margin: 0;
     background: linear-gradient(45deg, #f6d365, #fda085, #fbc2eb, #a6c1ee, #e2eecb);
-    background-size: 50% 100%;
+    background-size: 200% 200%;
     animation: gradientAnimation 10s ease infinite alternate-reverse;
 }
 
