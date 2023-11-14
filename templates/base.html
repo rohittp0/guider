@@ -29,6 +29,9 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
     {% block style %}{% endblock %}
+    {% block nav_style %}
+        <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    {% endblock %}
 </head>
 <body>
 {% block nav %}
