@@ -1,6 +1,7 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render, get_object_or_404, redirect
 
+from home.logic import calculate_scores, calculate_overall
 from home.models import Assessment, Response, Answer
 
 
@@ -82,4 +83,12 @@ def assessments(request):
 
 def result(request, response_id):
     resp = get_object_or_404(Response, id=response_id)
-    return render(request, 'home/result.html', context={"response": resp})
+
+    page_scores = calculate_scores(resp)
+    overall_score = calculate_overall(page_scores)
+    context = {
+        'page_scores': page_scores,
+        'overall_score': overall_score,
+    }
+
+    return render(request, 'home/result.html', context=context)

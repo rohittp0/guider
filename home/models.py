@@ -26,21 +26,13 @@ class Question(models.Model):
         return self.question_text
 
 
-class Section(models.Model):
-    title = models.CharField(max_length=100)
-    questions = models.ManyToManyField(Question)
-    page = models.ForeignKey('FormPage', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
-
-
 class FormPage(models.Model):
     name = models.CharField(max_length=30, default='')
     title = models.CharField(max_length=100)
     description = models.TextField()
     questions = models.ManyToManyField(Question, blank=True)
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
+    skip_calculation = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -72,4 +64,7 @@ class Response(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        if self.current_page is None:
+            return self.assessment.name + ' - ' + 'Finished'
+
         return self.assessment.name + ' - ' + self.current_page.title

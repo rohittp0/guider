@@ -1,7 +1,7 @@
 from django.contrib import admin
-from nested_inline.admin import NestedModelAdmin, NestedStackedInline
+from django.contrib.admin import StackedInline, ModelAdmin
 
-from .models import Assessment, FormPage, Options, Question, Section, Response, Answer
+from .models import Assessment, FormPage, Options, Question, Response, Answer
 
 
 class OptionsInline(admin.TabularInline):
@@ -17,21 +17,15 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['question_text']
 
 
-class SectionAdmin(NestedStackedInline):
-    model = Section
-    extra = 1
-
-
-class FormPageAdmin(NestedStackedInline):
+class FormPageAdmin(StackedInline):
     model = FormPage
     extra = 1
-    inlines = [SectionAdmin]
 
 
 @admin.register(Assessment)
-class AssessmentAdmin(NestedModelAdmin):
+class AssessmentAdmin(ModelAdmin):
     list_display = ('name', 'description')
-    search_fields = ['name']
+    search_fields = ['name', 'description']
     inlines = [FormPageAdmin]
 
 

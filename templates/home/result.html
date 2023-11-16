@@ -6,12 +6,75 @@
 {% endblock %}
 
 {% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     {% block nav %}{% endblock %}
     <div class="vh-100">
-        <h4 class="p-5">Waiting for result calculation logic...</h4>
+
+        {% for donut_data in page_scores %}
+            <div class="w-25 h-25">
+                <canvas id="donutChart{{ forloop.counter }}"></canvas>
+            </div>
+        {% endfor %}
+
+
     </div>
+
 
 {% endblock content %}
 
 {% block script %}
+    <script>
+        const options = {
+            legend: {
+                display: false,
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false,
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "92%"
+        }
+
+        {% for name, score, remaining in page_scores %}
+
+            new Chart(document.getElementById("donutChart{{ forloop.counter }}"), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        borderWidth: 0,
+                        backgroundColor: [
+                            "rgb(16 190 210)",
+                            "rgb(58 76 88)"
+                        ],
+                        data: [{{ score }}, {{ remaining }}]
+                    }]
+                },
+                plugins: [{
+                    beforeDraw: function (chart) {
+                        const width = chart.width,
+                            height = chart.height,
+                            ctx = chart.ctx;
+
+                        ctx.restore();
+                        const fontSize = (height / 150).toFixed(2);
+                        ctx.font = fontSize + "em sans-serif";
+                        ctx.fillStyle = "white";
+                        ctx.textBaseline = "middle";
+
+                        const text = "{{ score }}%",
+                            textX = Math.round((width - ctx.measureText(text).width) / 2),
+                            textY = height / 2;
+
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }],
+                options
+            });
+        {% endfor %}
+    </script>
 {% endblock %}
