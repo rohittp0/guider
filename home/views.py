@@ -89,6 +89,7 @@ def result(request, response_id):
     context = {
         'page_scores': page_scores,
         'overall_score': overall_score,
+        'pages': len(page_scores)
     }
 
     return render(request, 'home/result.html', context=context)
