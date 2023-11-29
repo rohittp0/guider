@@ -1,11 +1,21 @@
 from django.contrib import admin
 from django.contrib.admin import StackedInline, ModelAdmin
 
-from .models import Assessment, FormPage, Options, Question, Response, Answer
+from .models import Assessment, FormPage, Options, Question, Response, Answer, Category, Suggestion
 
 
 class OptionsInline(admin.TabularInline):
     model = Options
+    extra = 0
+
+
+class CategoryInline(admin.TabularInline):
+    model = Category
+    extra = 0
+
+
+class SuggestionInline(admin.TabularInline):
+    model = Suggestion
     extra = 0
 
 
@@ -26,7 +36,7 @@ class FormPageAdmin(StackedInline):
 class AssessmentAdmin(ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ['name', 'description']
-    inlines = [FormPageAdmin]
+    inlines = [FormPageAdmin, CategoryInline, SuggestionInline]
 
 
 @admin.register(Response)

@@ -26,6 +26,15 @@ class Question(models.Model):
         return self.question_text
 
 
+class Suggestion(models.Model):
+    title = models.CharField(max_length=100)
+    caption = models.CharField(max_length=300)
+    url = models.CharField(max_length=200)
+    form_page = models.ForeignKey('FormPage', on_delete=models.CASCADE,
+                                  limit_choices_to={'assessment': models.F('assessment')})
+    assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
+
+
 class FormPage(models.Model):
     name = models.CharField(max_length=30, default='')
     title = models.CharField(max_length=100)
@@ -41,6 +50,16 @@ class FormPage(models.Model):
         if not self.name:
             self.name = self.title[:30]
         super().save(force_insert, force_update, using, update_fields)
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=100)
+    caption = models.CharField(max_length=300)
+    points = models.IntegerField()
+    assessment = models.ForeignKey(to="Assessment", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 
 class Assessment(models.Model):
