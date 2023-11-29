@@ -86,10 +86,16 @@ def result(request, response_id):
 
     page_scores = calculate_scores(resp)
     overall_score = calculate_overall(page_scores)
+
+    category = (resp.assessment.category_set.order_by("-points")
+                .filter(points__lte=overall_score).first())
+
     context = {
         'page_scores': page_scores,
         'overall_score': overall_score,
-        'pages': len(page_scores)
+        'pages': len(page_scores),
+        'category': category,
+        'form_pages': resp.assessment.formpage_set.all()
     }
 
     return render(request, 'home/result.html', context=context)

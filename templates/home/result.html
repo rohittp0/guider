@@ -9,60 +9,76 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     {% block nav %}{% endblock %}
-    <div class="bg-primary-500">
-        <div class="row">
-            <div class="col-12 border-bottom">
-                <div class="text-left p-3">
-                    <h3 class="font-bold text-white"><a href="/">Guider</a></h3>
-                </div>
+    <div class="bg-primary-500 row m-0">
+        <div class="col-12 border-bottom">
+            <div class="text-left p-3">
+                <h3 class="font-bold text-white"><a href="/">Guider</a></h3>
             </div>
-            <div class="col-lg-8 col-sm-12 p-4">
-                <div class="col-12">
-                    <p style="color: #d1d1d1; font-size: 1.15rem">Your organization is:</p>
-                    <h1 class="my-2 text-white" style="font-size: 5rem;">Data Informed</h1>
-                    <p class="text-white w-75">The metrics shown below is based on the weighted calculation of answers
-                        you
-                        selected during the assessment. You can use this report to form informed decisions about your
-                        organization's next step</p>
+        </div>
+        <div class="col-lg-8 col-sm-12 p-4">
+            <div class="col-12">
+                <p style="color: #d1d1d1; font-size: 1.15rem">Your organization is:</p>
+                <h1 class="my-2 text-white" style="font-size: 5rem;">{{ category.title }}</h1>
+                <p class="text-white w-75">{{ category.caption }}</p>
+            </div>
+            <div class="row p-5 border-bottom">
+                <div class="col-lg-3 col-sm-12 d-flex justify-content-center flex-column ">
+                    <p class="text-white">Overall Score</p>
+                    <h1 class="text-white" style="font-size: 5.5rem;">{{ overall_score }}<span
+                            style="font-size: 2rem;">&nbsp;%</span></h1>
                 </div>
-                <div class="row p-5 border-bottom">
-                    <div class="col-lg-3 col-sm-12 d-flex justify-content-center flex-column ">
-                        <p class="text-white">Overall Score</p>
-                        <h1 class="text-white" style="font-size: 5.5rem;">{{ overall_score }}<span
-                                style="font-size: 2rem;">&nbsp;%</span></h1>
-                    </div>
-                    <div class="col-lg-9 col-sm-12 chart-grid" style="grid-template-columns: repeat({{ pages }}, 1fr)">
-                        {% for name, _, _ in page_scores %}
+                <div class="col-lg-9 col-sm-12 chart-grid" style="grid-template-columns: repeat({{ pages }}, 1fr)">
+                    {% for name, _, _ in page_scores %}
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <h4 class="text-white mb-4">{{ name }}</h4>
+                            <div class="w-75 h-75">
+                                <canvas class="donutChart{{ forloop.counter }}"></canvas>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% for page in form_pages %}
+                    <div class="col-lg-9 col-sm-12" style="grid-template-columns: repeat({{ pages }}, 1fr)">
+                        <h3>{{ page.name }}</h3>
+                        <p>{{ page.description }}</p>
+                        <div class="row">
+                            <div class="col-4">
+                                <canvas class="donutChart{{ forloop.counter }}"></canvas>
+                            </div>
+                        </div>
+                        {% for suggestion in page.suggestion_set.all %}
                             <div class="d-flex flex-column justify-content-center align-items-center">
-                                <h4 class="text-white mb-4">{{ name }}</h4>
+                                <h4 class="text-white mb-4">{{ suggestion.title }}</h4>
                                 <div class="w-75 h-75">
-                                    <canvas id="donutChart{{ forloop.counter }}"></canvas>
+                                    <p>
+                                        {{ suggestion.caption }}
+                                    </p>
+                                    <a href="{{ suggestion.url }}">Know More</a>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                </div>
+                {% endfor %}
             </div>
-            <div class="col-lg-4 hidden-sm border-left p-5">
-                <p class="text-white my-3" style="font-size: 1.1rem; text-align: justify;">
-                    This page shows your organization’s data maturity assessment results. Scoring is based off the three
-                    main categories, each of which includes notable themes.
-                </p>
-                <p class="text-white my-4" style="font-size: 1.1rem; text-align: justify;">
-                    Use this URL to share this page with colleagues, funders, or anyone you choose:
-                </p>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="copy-text"
-                                   value="{{ request.build_absolute_uri }}" readonly>
-                            <button class="btn btn-outline-secondary" type="button" id="copy-button">Copy</button>
-                        </div>
+        </div>
+        <div class="col-lg-4 hidden-sm border-left p-5">
+            <p class="text-white my-3" style="font-size: 1.1rem; text-align: justify;">
+                This page shows your organization’s data maturity assessment results. Scoring is based off the three
+                main categories, each of which includes notable themes.
+            </p>
+            <p class="text-white my-4" style="font-size: 1.1rem; text-align: justify;">
+                Use this URL to share this page with colleagues, funders, or anyone you choose:
+            </p>
+            <div class="row">
+                <div class="col-12">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="copy-text"
+                               value="{{ request.build_absolute_uri }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="copy-button">Copy</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 
@@ -100,40 +116,41 @@
 
         {% for name, score, remaining in page_scores %}
 
-            new Chart(document.getElementById("donutChart{{ forloop.counter }}"), {
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        borderWidth: 0,
-                        backgroundColor: [
-                            "rgb(16 190 210)",
-                            "rgb(58 76 88)"
-                        ],
-                        data: [{{ score }}, {{ remaining }}]
-                    }]
-                },
-                plugins: [{
-                    beforeDraw: function (chart) {
-                        const width = chart.width,
-                            height = chart.height,
-                            ctx = chart.ctx;
+            for (const chart of document.getElementsByClassName("donutChart{{ forloop.counter }}"))
+                new Chart(chart, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            borderWidth: 0,
+                            backgroundColor: [
+                                "rgb(16 190 210)",
+                                "rgb(58 76 88)"
+                            ],
+                            data: [{{ score }}, {{ remaining }}]
+                        }]
+                    },
+                    plugins: [{
+                        beforeDraw: function (chart) {
+                            const width = chart.width,
+                                height = chart.height,
+                                ctx = chart.ctx;
 
-                        ctx.restore();
-                        const fontSize = (height / 150).toFixed(2);
-                        ctx.font = fontSize + "em sans-serif";
-                        ctx.fillStyle = "white";
-                        ctx.textBaseline = "middle";
+                            ctx.restore();
+                            const fontSize = (height / 150).toFixed(2);
+                            ctx.font = fontSize + "em sans-serif";
+                            ctx.fillStyle = "white";
+                            ctx.textBaseline = "middle";
 
-                        const text = "{{ score }}%",
-                            textX = Math.round((width - ctx.measureText(text).width) / 2),
-                            textY = height / 2;
+                            const text = "{{ score }}%",
+                                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                textY = height / 2;
 
-                        ctx.fillText(text, textX, textY);
-                        ctx.save();
-                    }
-                }],
-                options
-            });
+                            ctx.fillText(text, textX, textY);
+                            ctx.save();
+                        }
+                    }],
+                    options
+                });
         {% endfor %}
     </script>
 {% endblock %}
