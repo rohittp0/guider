@@ -8,6 +8,16 @@ question_categories = (
     ('la', 'Long Answer'),
 )
 
+suggest_categories = (
+    ('guide', 'Guide'),
+    ('tool', 'Tool'),
+    ('resource', 'Resource'),
+    ('article', 'Article'),
+    ('video', 'Video'),
+    ('course', 'Course'),
+    ('other', 'Other'),
+)
+
 
 class Options(models.Model):
     option_text = models.CharField(max_length=200)
@@ -30,6 +40,7 @@ class Suggestion(models.Model):
     title = models.CharField(max_length=100)
     caption = models.CharField(max_length=300)
     url = models.CharField(max_length=200)
+    category = models.TextField(choices=suggest_categories, default='other')
     form_page = models.ForeignKey('FormPage', on_delete=models.CASCADE,
                                   limit_choices_to={'assessment': models.F('assessment')})
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
@@ -39,6 +50,7 @@ class FormPage(models.Model):
     name = models.CharField(max_length=30, default='')
     title = models.CharField(max_length=100)
     description = models.TextField()
+    result_description = models.TextField()
     questions = models.ManyToManyField(Question, blank=True)
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
     skip_calculation = models.BooleanField(default=False)
