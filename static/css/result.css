@@ -1,3 +1,16 @@
+@font-face {
+    font-family: ClashDisplay;
+    src: url(/static/res/ClashDisplay-Variable.ttf);
+}
+
+body{
+    font-family: "DM Sans", monospace;
+}
+
+.border-top{
+    border-top: 1px solid rgba(255,255,255,0.2) !important;
+}
+
 .border-bottom{
     border-bottom: 1px solid rgba(255,255,255,0.2) !important;
 }
@@ -6,7 +19,34 @@
     border-left: 1px solid rgba(255,255,255,0.2) !important;
 }
 
+.border-right{
+    border-right: 1px solid rgba(255,255,255,0.2) !important;
+}
+
 .chart-grid{
     display: grid;
     gap: 1rem;
+}
+
+.text-content {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.text-06 {
+    font-stretch: 100%;
+    color: rgba(255,255,255,0.6);
+}
+
+.h1 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    font-family: ClashDisplay, "Open Sans", sans-serif;
+    color: #fff;
+}
+
+.row{
+    margin-left: 0;
+    margin-right: 0;
 }

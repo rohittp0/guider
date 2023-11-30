@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block style %}
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/result.css' %}">
 {% endblock %}
 
@@ -15,41 +16,44 @@
                 <h3 class="font-bold text-white"><a href="/">Guider</a></h3>
             </div>
         </div>
-        <div class="col-lg-8 col-sm-12 p-4">
-            <div class="col-12">
-                <p style="color: #d1d1d1; font-size: 1.15rem">Your organization is:</p>
-                <h1 class="my-2 text-white" style="font-size: 5rem;">{{ category.title }}</h1>
-                <p class="text-white w-75">{{ category.caption }}</p>
+        <div class="col-lg-8 col-sm-12 px-0">
+            <div class="col-12 p-4">
+                <p class="text-content text-06">Your organization is:</p>
+                <h1 class="my-2 h1" style="font-size: 5rem;">{{ category.title }}</h1>
+                <p class="text-content w-75">{{ category.caption }}</p>
             </div>
-            <div class="row p-5 border-bottom">
-                <div class="col-lg-3 col-sm-12 d-flex justify-content-center flex-column ">
+            <div class="row pb-5 px-4 border-bottom">
+                <div class="col-lg-3 col-sm-12 d-flex justify-content-center flex-column border-right p-0">
                     <p class="text-white">Overall Score</p>
                     <h1 class="text-white" style="font-size: 5.5rem;">{{ overall_score }}<span
                             style="font-size: 2rem;">&nbsp;%</span></h1>
                 </div>
-                <div class="col-lg-9 col-sm-12 chart-grid" style="grid-template-columns: repeat({{ pages }}, 1fr)">
+                <div class="col-lg-9 col-sm-12 chart-grid" style="grid-template-columns: repeat({{ pages }}, 100px)">
                     {% for name, _, _ in page_scores %}
                         <div class="d-flex flex-column justify-content-center align-items-center">
-                            <h4 class="text-white mb-4">{{ name }}</h4>
-                            <div class="w-75 h-75">
+                            <p class="text-white">{{ name }}</p>
+                            <div style="width: 100px; height: 100px;">
                                 <canvas class="donutChart{{ forloop.counter }}"></canvas>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                {% for page in form_pages %}
-                    <div class="col-lg-9 col-sm-12" style="grid-template-columns: repeat({{ pages }}, 1fr)">
+            </div>
+
+            {% for page in form_pages %}
+                <div class="row mb-4 border-top">
+                    <div class="col-lg-9 col-sm-12">
                         <h3>{{ page.name }}</h3>
                         <p>{{ page.description }}</p>
                         <div class="row">
-                            <div class="col-4">
+                            <div style="width: 250px; height: 250px;">
                                 <canvas class="donutChart{{ forloop.counter }}"></canvas>
                             </div>
                         </div>
                         {% for suggestion in page.suggestion_set.all %}
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <h4 class="text-white mb-4">{{ suggestion.title }}</h4>
-                                <div class="w-75 h-75">
+                                <div class="w-50 h-50">
                                     <p>
                                         {{ suggestion.caption }}
                                     </p>
@@ -58,8 +62,8 @@
                             </div>
                         {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
         <div class="col-lg-4 hidden-sm border-left p-5">
             <p class="text-white my-3" style="font-size: 1.1rem; text-align: justify;">
@@ -111,7 +115,7 @@
             },
             responsive: true,
             maintainAspectRatio: false,
-            cutout: "92%"
+            cutout: "85%"
         }
 
         {% for name, score, remaining in page_scores %}
@@ -136,16 +140,16 @@
                                 ctx = chart.ctx;
 
                             ctx.restore();
-                            const fontSize = (height / 150).toFixed(2);
+                            const fontSize = (height / 100).toFixed(2);
                             ctx.font = fontSize + "em sans-serif";
                             ctx.fillStyle = "white";
                             ctx.textBaseline = "middle";
 
                             const text = "{{ score }}%",
                                 textX = Math.round((width - ctx.measureText(text).width) / 2),
-                                textY = height / 2;
+                                textY = height + ctx.measureText("M").width;
 
-                            ctx.fillText(text, textX, textY);
+                            ctx.fillText(text, textX, textY / 2);
                             ctx.save();
                         }
                     }],
