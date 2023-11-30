@@ -48,11 +48,9 @@
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
-}
-
-html * {
     -webkit-font-smoothing: antialiased;
 }
+
 
 .bg-blue-500 {
     background-color: var(--dl-color-blue-500) !important;

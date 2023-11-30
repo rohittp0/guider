@@ -19,16 +19,16 @@
         <div class="col-lg-8 col-sm-12 px-0">
             <div class="col-12 p-4">
                 <p class="text-content text-06">Your organization is:</p>
-                <h1 class="my-2 h1" style="font-size: 5rem;">{{ category.title }}</h1>
+                <h1 class="my-2 h h1">{{ category.title }}</h1>
                 <p class="text-content w-75">{{ category.caption }}</p>
             </div>
-            <div class="row pb-5 px-4 border-bottom">
-                <div class="col-lg-3 col-sm-12 d-flex justify-content-center flex-column border-right p-0">
+            <div class="row pb-5 border-bottom">
+                <div class="col-lg-3 col-sm-12 overall-container">
                     <p class="text-white">Overall Score</p>
                     <h1 class="text-white" style="font-size: 5.5rem;">{{ overall_score }}<span
                             style="font-size: 2rem;">&nbsp;%</span></h1>
                 </div>
-                <div class="col-lg-9 col-sm-12 chart-grid" style="grid-template-columns: repeat({{ pages }}, 100px)">
+                <div class="col-lg-9 col-sm-12 chart-grid pl-5 p-lg-5 py-0" style="grid-template-columns: repeat({{ pages }}, 100px)">
                     {% for name, _, _ in page_scores %}
                         <div class="d-flex flex-column justify-content-center align-items-center">
                             <p class="text-white">{{ name }}</p>
@@ -42,34 +42,32 @@
 
             {% for page in form_pages %}
                 <div class="row mb-4 border-top">
-                    <div class="col-lg-9 col-sm-12">
-                        <h3>{{ page.name }}</h3>
-                        <p>{{ page.description }}</p>
+                    <div class="col-12 p-4">
+                        <h2 class="h h2">{{ page.name }}</h2>
+
                         <div class="row">
-                            <div style="width: 250px; height: 250px;">
-                                <canvas class="donutChart{{ forloop.counter }}"></canvas>
+                            <p class="col-sm-12 col-lg-9 page-description">{{ page.description }}</p>
+                            <div class="col-sm-12 col-lg-3 d-flex justify-content-center">
+                                <div style="width: 190px; height: 190px;">
+                                    <canvas class="donutChart{{ forloop.counter }}"></canvas>
+                                </div>
                             </div>
                         </div>
                         {% for suggestion in page.suggestion_set.all %}
-                            <div class="d-flex flex-column justify-content-center align-items-center">
-                                <h4 class="text-white mb-4">{{ suggestion.title }}</h4>
-                                <div class="w-50 h-50">
-                                    <p>
-                                        {{ suggestion.caption }}
-                                    </p>
-                                    <a href="{{ suggestion.url }}">Know More</a>
-                                </div>
-                            </div>
+                            {% if forloop.counter == 1 %}
+                                <p class="h mt-4 mb-2">Suggestions from our resource library.</p>
+                            {% endif %}
+                            <a href="{{ suggestion.url }}" class="suggestion-card mt-3">
+                                <p class="text-06">Guide</p>
+                                <h5 class="h h3">{{ suggestion.title }}</h5>
+                                <p class="card-text">{{ suggestion.caption }}</p>
+                            </a>
                         {% endfor %}
                     </div>
                 </div>
             {% endfor %}
         </div>
         <div class="col-lg-4 hidden-sm border-left p-5">
-            <p class="text-white my-3" style="font-size: 1.1rem; text-align: justify;">
-                This page shows your organization’s data maturity assessment results. Scoring is based off the three
-                main categories, each of which includes notable themes.
-            </p>
             <p class="text-white my-4" style="font-size: 1.1rem; text-align: justify;">
                 Use this URL to share this page with colleagues, funders, or anyone you choose:
             </p>
