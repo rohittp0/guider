@@ -38,6 +38,12 @@
                     <div class="border-bottom p-5">
                         <p class="mb-4">Question {{ forloop.counter }} </p>
                         <h3 class="mb-4">{{ question.question_text }}</h3>
+                        {% if question.info %}
+                            <div class="info-container">
+                                <i class="info-button">i</i>
+                                <p class="info-text">{{ question.info }}</p>
+                            </div>
+                        {% endif %}
 
                         {% if question.category == "sa" or question.category == "la" %}
                             <input type="text" name="{{ question.id }}" class="form-control p-3" required>
@@ -57,7 +63,7 @@
                                                id="option-{{ option.id }}"
                                                name="{{ question.id }}{% if question.category == 'ms' %}[]{% endif %}"
                                                value="{{ option.id }}"
-                                                {% if question.category == 'ss' %}required{% endif %}
+                                               {% if question.category == 'ss' %}required{% endif %}
                                         >
                                         <label for="option-{{ option.id }}">{{ option.option_text }}</label>
                                     </li>

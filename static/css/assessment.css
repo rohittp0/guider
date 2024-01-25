@@ -116,3 +116,34 @@
     justify-content: center;
 }
 
+.info-container{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+}
+
+.info-container .info-button {
+    border-radius: 50%;
+    background-color: lightblue;
+    color: var(--dl-color-secondary-700);
+    padding: 0.1rem 0.65rem;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.info-container .info-text {
+    display: none;
+    font-size: 14px;
+    color: var(--dl-color-secondary-700);
+}
+
+.info-container .info-button:hover {
+    background-color: var(--dl-color-blue-500);
+    color: white;
+}
+
+.info-container:has(.info-button:hover) .info-text {
+    display: block;
+}
