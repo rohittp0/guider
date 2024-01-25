@@ -30,6 +30,7 @@ class Options(models.Model):
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
+    info = models.TextField(help_text="Additional information about the question", blank=True, null=True)
     category = models.CharField(max_length=2, choices=question_categories)
 
     def __str__(self):
