@@ -1,22 +1,30 @@
-from django.db.models import Sum, Max
-from .models import FormPage, Answer
+from django.db.models import Sum
+
+from .models import FormPage
 
 
 def calculate_scores(response):
     pages_scores = []
     for page in FormPage.objects.filter(assessment=response.assessment).exclude(skip_calculation=True):
-        questions = page.questions.all()
-        total_weight = questions.annotate(max_weight=Max('options__weight')).aggregate(Sum('max_weight'))[
-            'max_weight__sum']
-        response_weight = Answer.objects.filter(question__in=questions, response=response).annotate(
-            sel_weight=Sum('question__options__weight')).aggregate(Sum('sel_weight'))['sel_weight__sum']
-        page_score = (response_weight / total_weight if total_weight else 0) * 100  # Convert to percentage
+        questions = page.questions.filter(category__in=['ms', 'ss'])
+        total_weight = questions.annotate(total_weight=Sum('options__weight')).aggregate(Sum('total_weight'))[
+            'total_weight__sum']
+
+        # Corrected: Calculate response_weight by properly filtering selected options
+        response_weight = 0
+        for question in questions:
+            ids = response.answer_set.get(question=question).answer_text.split(',')
+            response_weight += question.options_set.filter(id__in=ids).aggregate(Sum('weight'))['weight__sum'] or 0
+
+        page_score = round((response_weight / total_weight if total_weight else 0) * 100, 2)  # Convert to percentage
         pages_scores.append((page.name, page_score, 100 - page_score))
 
     return pages_scores
 
 
 def calculate_overall(page_scores):
-    total_weight = sum([page[1] for page in page_scores])
-    total_score = sum([page[2] for page in page_scores])
-    return total_score / total_weight * 100 if total_weight else 0
+    if not page_scores:
+        return 0
+    total_score = sum([page[1] for page in page_scores])
+    overall_score = round(total_score / len(page_scores), 2)  # Average score across all pages
+    return overall_score
