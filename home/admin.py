@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.contrib.admin import StackedInline, ModelAdmin
 
-from .models import Assessment, FormPage, Options, Question, Category, Suggestion, Result
+from .models import Assessment, FormPage, Options, Question, Category, Suggestion, Result, ResultPage
 
 
 class OptionsInline(admin.TabularInline):
@@ -22,13 +21,13 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['question_text']
 
 
-class FormPageAdmin(StackedInline):
+class FormPageAdmin(admin.StackedInline):
     model = FormPage
     extra = 1
 
 
 @admin.register(Assessment)
-class AssessmentAdmin(ModelAdmin):
+class AssessmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ['name', 'description']
     inlines = [FormPageAdmin, CategoryInline]
@@ -41,6 +40,20 @@ class SuggestionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'caption']
 
 
+class ResultPageAdmin(admin.TabularInline):
+    model = ResultPage
+    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(Result)
 class ResultAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('response', 'category')
+    list_filter = ['response']
+    inlines = [ResultPageAdmin]
+    readonly_fields = ['score', 'response', 'category', 'pages']

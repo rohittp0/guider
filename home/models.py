@@ -45,6 +45,9 @@ class Suggestion(models.Model):
     url = models.CharField(max_length=200)
     category = models.TextField(choices=suggest_categories, default='other')
 
+    def __str__(self):
+        return self.title
+
 
 class FormPage(models.Model):
     name = models.CharField(max_length=30, default='')
@@ -96,7 +99,7 @@ class Response(models.Model):
 
     def __str__(self):
         if self.current_page is None:
-            return self.assessment.name + ' - ' + 'Finished'
+            return self.assessment.name + ' - ' + self.date.strftime('%Y-%m-%d %H:%M')
 
         return self.assessment.name + ' - ' + self.current_page.title
 
