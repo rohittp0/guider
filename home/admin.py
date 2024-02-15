@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import StackedInline, ModelAdmin
 
-from .models import Assessment, FormPage, Options, Question, Response, Answer, Category, Suggestion
+from .models import Assessment, FormPage, Options, Question, Category, Suggestion, Result
 
 
 class OptionsInline(admin.TabularInline):
@@ -34,22 +34,13 @@ class AssessmentAdmin(ModelAdmin):
     inlines = [FormPageAdmin, CategoryInline]
 
 
-@admin.register(Response)
-class ResponseAdmin(admin.ModelAdmin):
-    list_display = ('assessment', 'current_page')
-    list_filter = ['assessment']
-    search_fields = ['assessment']
-
-
-@admin.register(Answer)
-class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('question', 'response', 'answer_text')
-    list_filter = ['response']
-    search_fields = ['question']
-
-
 @admin.register(Suggestion)
 class SuggestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'caption', 'url', 'category')
     list_filter = ['category']
     search_fields = ['title', 'caption']
+
+
+@admin.register(Result)
+class ResultAdmin(admin.ModelAdmin):
+    pass

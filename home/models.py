@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 question_categories = (
     ('ss', 'Single Select'),
@@ -98,3 +99,60 @@ class Response(models.Model):
             return self.assessment.name + ' - ' + 'Finished'
 
         return self.assessment.name + ' - ' + self.current_page.title
+
+
+class ResultPage(models.Model):
+    result = models.ForeignKey('Result', on_delete=models.CASCADE)
+    page = models.ForeignKey('FormPage', on_delete=models.CASCADE)
+    score = models.FloatField()
+    suggestions = models.ManyToManyField(Suggestion, blank=True)
+
+
+class Result(models.Model):
+    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    pages = models.ManyToManyField(FormPage, through=ResultPage)
+    score = models.FloatField()
+
+    def __str__(self):
+        return self.response.assessment.name
+
+    def calculate_scores(self):
+        self.score = 0
+        page_scores = []
+
+        for page in self.response.assessment.formpage_set.exclude(skip_calculation=True):
+            questions = page.questions.filter(category__in=['ms', 'ss'])
+            total_weight = questions.annotate(total_weight=Sum('options__weight')).aggregate(Sum('total_weight'))[
+                'total_weight__sum']
+
+            # Corrected: Calculate response_weight by properly filtering selected options
+            response_weight = 0
+            suggestions = []
+
+            for question in questions:
+                ids = self.response.answer_set.get(question=question).answer_text.split(',')
+                options = question.options_set.filter(id__in=ids)
+                suggestions += options.values_list('suggestions', flat=True)
+                response_weight += options.aggregate(Sum('weight'))['weight__sum'] or 0
+
+            page_score = (response_weight / total_weight if total_weight else 0) * 100
+            self.score += page_score
+
+            page_scores.append((page, page_score, suggestions))
+
+        self.score /= self.response.assessment.formpage_set.exclude(skip_calculation=True).count()
+        return page_scores
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        page_scores = self.calculate_scores()
+        self.category = (self.response.assessment.category_set.order_by("-points")
+                         .filter(points__lte=self.score).first())
+
+        super().save(force_insert, force_update, using, update_fields)
+
+        self.pages.clear()
+        for page, score, suggestions in page_scores:
+            result_page = ResultPage.objects.create(result=self, page=page, score=score)
+            result_page.suggestions.set(suggestions)
+            result_page.save()

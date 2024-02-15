@@ -1,8 +1,7 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render, get_object_or_404, redirect
 
-from home.logic import calculate_scores, calculate_overall
-from home.models import Assessment, Response, Answer
+from home.models import Assessment, Response, Answer, Result
 
 
 def index(request):
@@ -83,18 +82,12 @@ def assessments(request):
 
 def result(request, response_id):
     resp = get_object_or_404(Response, id=response_id)
-
-    page_scores = calculate_scores(resp)
-    overall_score = calculate_overall(page_scores)
-
-    category = resp.assessment.category_set.order_by("-points").filter(points__lte=overall_score).first()
+    result_data = Result.objects.get_or_create(response=resp)[0]
+    result_pages = result_data.resultpage_set.all()
 
     context = {
-        'page_scores': page_scores,
-        'overall_score': overall_score,
-        'pages': len(page_scores),
-        'category': category,
-        'form_pages': resp.assessment.formpage_set.all()
+        'result': result_data,
+        'pages': result_pages
     }
 
     return render(request, 'home/result.html', context=context)
