@@ -14,11 +14,6 @@ class CategoryInline(admin.TabularInline):
     extra = 0
 
 
-class SuggestionInline(admin.TabularInline):
-    model = Suggestion
-    extra = 0
-
-
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [OptionsInline]
@@ -36,7 +31,7 @@ class FormPageAdmin(StackedInline):
 class AssessmentAdmin(ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ['name', 'description']
-    inlines = [FormPageAdmin, CategoryInline, SuggestionInline]
+    inlines = [FormPageAdmin, CategoryInline]
 
 
 @admin.register(Response)
@@ -51,3 +46,10 @@ class AnswerAdmin(admin.ModelAdmin):
     list_display = ('question', 'response', 'answer_text')
     list_filter = ['response']
     search_fields = ['question']
+
+
+@admin.register(Suggestion)
+class SuggestionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'caption', 'url', 'category')
+    list_filter = ['category']
+    search_fields = ['title', 'caption']

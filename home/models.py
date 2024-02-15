@@ -23,6 +23,7 @@ class Options(models.Model):
     option_text = models.CharField(max_length=200)
     weight = models.IntegerField(default=0)
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
+    suggestions = models.ManyToManyField('Suggestion', blank=True)
 
     def __str__(self):
         return self.option_text
@@ -42,9 +43,6 @@ class Suggestion(models.Model):
     caption = models.CharField(max_length=300)
     url = models.CharField(max_length=200)
     category = models.TextField(choices=suggest_categories, default='other')
-    form_page = models.ForeignKey('FormPage', on_delete=models.CASCADE,
-                                  limit_choices_to={'assessment': models.F('assessment')})
-    assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
 
 
 class FormPage(models.Model):
