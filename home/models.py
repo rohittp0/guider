@@ -157,5 +157,5 @@ class Result(models.Model):
         self.pages.clear()
         for page, score, suggestions in page_scores:
             result_page = ResultPage.objects.create(result=self, page=page, score=score)
-            result_page.suggestions.set(suggestions)
+            result_page.suggestions.set(filter(lambda x: x, suggestions))
             result_page.save()
