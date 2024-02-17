@@ -21,7 +21,7 @@ suggest_categories = (
 
 
 class Options(models.Model):
-    option_text = models.CharField(max_length=200)
+    option_text = models.CharField(max_length=500)
     weight = models.IntegerField(default=0)
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
     suggestions = models.ManyToManyField('Suggestion', blank=True)
@@ -31,7 +31,7 @@ class Options(models.Model):
 
 
 class Question(models.Model):
-    question_text = models.CharField(max_length=200)
+    question_text = models.CharField(max_length=500)
     info = models.TextField(help_text="Additional information about the question", blank=True, null=True)
     category = models.CharField(max_length=2, choices=question_categories)
 
@@ -41,8 +41,8 @@ class Question(models.Model):
 
 class Suggestion(models.Model):
     title = models.CharField(max_length=100)
-    caption = models.CharField(max_length=300)
-    url = models.CharField(max_length=200)
+    caption = models.CharField(max_length=1000)
+    url = models.CharField(max_length=500)
     category = models.TextField(choices=suggest_categories, default='other')
 
     def __str__(self):
@@ -68,8 +68,8 @@ class FormPage(models.Model):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
-    caption = models.CharField(max_length=300)
+    title = models.CharField(max_length=200)
+    caption = models.CharField(max_length=500)
     points = models.IntegerField()
     assessment = models.ForeignKey(to="Assessment", on_delete=models.CASCADE)
 
