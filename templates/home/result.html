@@ -22,10 +22,20 @@
                 <h1 class="my-2 h h1">{{ result.category.title }}</h1>
                 <p class="text-content w-75">{{ result.category.caption }}</p>
             </div>
+            <div class="col-12 p-4 my-4">
+                <div class="d-grid" style="grid-template-columns: repeat({{ categories | length }}, 1fr)">
+                    {% for category in categories %}
+                        <div class="progress-element {% if category.points < result.score %}filled-bar{% endif %}">
+                            <p class="text-white px-1">{{ category.points }}</p>
+                            <p class="text-white w-100 text-center">{{ category.title }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="row pb-5 border-bottom">
                 <div class="col-lg-3 col-sm-12 overall-container">
                     <p class="text-white">Overall Score</p>
-                    <h1 class="text-white" style="font-size: 5.5rem;">{{ result.score | floatformat  }}<span
+                    <h1 class="text-white" style="font-size: 5.5rem;">{{ result.score | floatformat }}<span
                             style="font-size: 2rem;">&nbsp;%</span></h1>
                 </div>
                 <div class="col-lg-9 col-sm-12 chart-grid pl-5 p-lg-5 py-0"

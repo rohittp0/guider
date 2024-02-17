@@ -84,10 +84,12 @@ def result(request, response_id):
     resp = get_object_or_404(Response, id=response_id)
     result_data = Result.objects.get_or_create(response=resp)[0]
     result_pages = result_data.resultpage_set.all()
+    categories = resp.assessment.category_set.order_by("points").all()
 
     context = {
         'result': result_data,
-        'pages': result_pages
+        'pages': result_pages,
+        'categories': categories
     }
 
     return render(request, 'home/result.html', context=context)

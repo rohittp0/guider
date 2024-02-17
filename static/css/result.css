@@ -89,6 +89,19 @@ body{
     border-right: 1px solid rgba(255,255,255,0.2);
 }
 
+.progress-element {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5rem solid rgb(58 76 88);
+    border-left: 1px solid rgb(16 190 210);
+}
+
+.progress-element.filled-bar{
+    border-bottom-color: rgb(16 190 210);
+}
+
 @media (max-width: 400px) {
     .overall-container{
         border: none;
