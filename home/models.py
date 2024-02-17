@@ -25,6 +25,7 @@ class Options(models.Model):
     weight = models.IntegerField(default=0)
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
     suggestions = models.ManyToManyField('Suggestion', blank=True)
+    question_number = models.IntegerField()
 
     def __str__(self):
         return self.option_text
@@ -57,6 +58,7 @@ class FormPage(models.Model):
     questions = models.ManyToManyField(Question, blank=True)
     assessment = models.ForeignKey('Assessment', on_delete=models.CASCADE)
     skip_calculation = models.BooleanField(default=False)
+    page_number = models.IntegerField()
 
     def __str__(self):
         return self.title
