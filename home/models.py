@@ -117,7 +117,7 @@ class Result(models.Model):
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     pages = models.ManyToManyField(FormPage, through=ResultPage)
-    score = models.FloatField()
+    score = models.FloatField(default=-1)
 
     def __str__(self):
         return self.response.assessment.name
@@ -136,10 +136,13 @@ class Result(models.Model):
             suggestions = []
 
             for question in questions:
-                ids = self.response.answer_set.get(question=question).answer_text.split(',')
-                options = question.options_set.filter(id__in=ids)
-                suggestions += options.values_list('suggestions', flat=True)
-                response_weight += options.aggregate(Sum('weight'))['weight__sum'] or 0
+                try:
+                    ids = self.response.answer_set.get(question=question).answer_text.split(',')
+                    options = question.options_set.filter(id__in=ids)
+                    suggestions += options.values_list('suggestions', flat=True)
+                    response_weight += options.aggregate(Sum('weight'))['weight__sum'] or 0
+                except Answer.DoesNotExist:
+                    continue
 
             page_score = (response_weight / total_weight if total_weight else 0) * 100
             self.score += page_score
@@ -147,14 +150,15 @@ class Result(models.Model):
             page_scores.append((page, page_score, suggestions))
 
         self.score /= self.response.assessment.formpage_set.exclude(skip_calculation=True).count()
-        return page_scores
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        page_scores = self.calculate_scores()
         self.category = (self.response.assessment.category_set.order_by("-points")
                          .filter(points__lte=self.score).first())
 
-        super().save(force_insert, force_update, using, update_fields)
+        return page_scores
+
+    def update_all(self):
+        page_scores = self.calculate_scores()
+
+        self.save()
 
         self.pages.clear()
         for page, score, suggestions in page_scores:
