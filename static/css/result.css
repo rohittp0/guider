@@ -95,11 +95,15 @@ body{
     justify-content: stretch;
     padding-bottom: 0.5rem;
     border-bottom: 0.5rem solid rgb(58 76 88);
-    border-left: 1px solid rgb(16 190 210);
+    border-right: 1px solid rgb(16 190 210);
 }
 
 .progress-element.filled-bar{
     border-bottom-color: rgb(16 190 210);
+}
+
+.text-right{
+    text-align: right;
 }
 
 @media (max-width: 400px) {

@@ -25,10 +25,14 @@
             <div class="col-12 p-4 my-4">
                 <div class="d-grid" style="grid-template-columns: repeat({{ categories | length }}, 1fr)">
                     {% for category in categories %}
-                        <div class="progress-element {% if category.points < result.score %}filled-bar{% endif %}">
-                            <p class="text-white px-1">{{ category.points }}</p>
+                        <div class="progress-element {% if category.points <= result.category.points %}filled-bar{% endif %}">
                             <p class="text-white w-100 text-center">{{ category.title }}</p>
                         </div>
+                    {% endfor %}
+                </div>
+                <div class="d-grid" style="grid-template-columns: repeat({{ categories | length }}, 1fr)">
+                    {% for category in categories %}
+                        <p class="text-white px-1 text-right">{{ category.points }}</p>
                     {% endfor %}
                 </div>
             </div>

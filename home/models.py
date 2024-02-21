@@ -156,8 +156,8 @@ class Result(models.Model):
             page_scores.append((page, page_score, suggestions))
 
         self.score /= self.response.assessment.formpage_set.exclude(skip_calculation=True).count()
-        self.category = (self.response.assessment.category_set.order_by("-points")
-                         .filter(points__lte=self.score).first())
+        self.category = (self.response.assessment.category_set.order_by("points")
+                         .filter(points__gte=self.score).first())
 
         return page_scores
 
