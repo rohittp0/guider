@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Max, Sum
 
 question_categories = (
     ('ss', 'Single Select'),
@@ -134,10 +134,10 @@ class Result(models.Model):
 
         for page in self.response.assessment.formpage_set.exclude(skip_calculation=True):
             questions = page.questions.filter(category__in=['ms', 'ss'])
-            total_weight = questions.annotate(total_weight=Sum('options__weight')).aggregate(Sum('total_weight'))[
-                'total_weight__sum']
+            total_weight = questions.filter(category='ss').annotate(max_weight=Max('options__weight')).aggregate(
+                Sum('max_weight'))['max_weight__sum']
+            total_weight += questions.filter(category='ms').aggregate(Sum('options__weight'))['options__weight__sum']
 
-            # Corrected: Calculate response_weight by properly filtering selected options
             response_weight = 0
             suggestions = []
 
