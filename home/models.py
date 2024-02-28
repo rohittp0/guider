@@ -135,8 +135,8 @@ class Result(models.Model):
         for page in self.response.assessment.formpage_set.exclude(skip_calculation=True):
             questions = page.questions.filter(category__in=['ms', 'ss'])
             total_weight = questions.filter(category='ss').annotate(max_weight=Max('options__weight')).aggregate(
-                Sum('max_weight'))['max_weight__sum']
-            total_weight += questions.filter(category='ms').aggregate(Sum('options__weight'))['options__weight__sum']
+                Sum('max_weight'))['max_weight__sum'] or 0
+            total_weight += questions.filter(category='ms').aggregate(Sum('options__weight'))['options__weight__sum'] or 0
 
             response_weight = 0
             suggestions = []
