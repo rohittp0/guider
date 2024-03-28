@@ -3,28 +3,28 @@
     src: url(/static/res/ClashDisplay-Variable.ttf);
 }
 
-body{
+body {
     font-family: "DM Sans", monospace;
     color: white;
 }
 
-.border-top{
-    border-top: 1px solid rgba(255,255,255,0.2) !important;
+.border-top {
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.border-bottom{
-    border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+.border-bottom {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.border-left{
-    border-left: 1px solid rgba(255,255,255,0.2) !important;
+.border-left {
+    border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.border-right{
-    border-right: 1px solid rgba(255,255,255,0.2) !important;
+.border-right {
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.chart-grid{
+.chart-grid {
     display: grid;
     gap: 1rem;
 }
@@ -36,7 +36,7 @@ body{
 
 .text-06 {
     font-stretch: 100%;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .h {
@@ -56,12 +56,12 @@ body{
     font-size: 2rem;
 }
 
-.row{
+.row {
     margin-left: 0;
     margin-right: 0;
 }
 
-.suggestion-card{
+.suggestion-card {
     text-decoration: none;
     color: white;
     background: rgba(255, 255, 255, 0.05);
@@ -75,18 +75,18 @@ body{
     width: 100%;
 }
 
-.page-description{
+.page-description {
     font-size: 1.1rem;
     text-align: justify;
     padding: 0 2rem 0 0;
 }
 
-.overall-container{
+.overall-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid rgba(255,255,255,0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .progress-element {
@@ -98,18 +98,24 @@ body{
     border-right: 1px solid rgb(16 190 210);
 }
 
-.progress-element.filled-bar{
+.progress-element.filled-bar {
     border-bottom-color: rgb(16 190 210);
 }
 
-.text-right{
+.text-right {
     text-align: right;
 }
 
+#google_translate_element {
+    left: unset;
+    right: 10px;
+    filter: invert();
+}
+
 @media (max-width: 400px) {
-    .overall-container{
+    .overall-container {
         border: none;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         margin-bottom: 2em;
     }
 }

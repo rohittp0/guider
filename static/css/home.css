@@ -1029,3 +1029,10 @@
         text-align: center;
     }
 }
+
+@media (min-width: 401px) {
+    #google_translate_element {
+        top: 30px;
+        bottom: unset;
+    }
+}
