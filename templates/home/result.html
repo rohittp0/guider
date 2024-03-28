@@ -72,7 +72,7 @@
                             {% if forloop.counter == 1 %}
                                 <p class="h mt-4 mb-2">Suggestions from our resource library.</p>
                             {% endif %}
-                            <a href="{{ suggestion.url }}" class="suggestion-card mt-3">
+                            <a href="{{ suggestion.url }}" target="_blank" class="suggestion-card mt-3">
                                 <p class="text-06">{{ suggestion.category.title }}</p>
                                 <h5 class="h h3">{{ suggestion.title }}</h5>
                                 <p class="card-text">{{ suggestion.caption }}</p>
