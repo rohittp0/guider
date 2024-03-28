@@ -58,8 +58,9 @@
                             <!-- Combined structure for 'ss' and 'ms' -->
                             <ul class="choice-list">
                                 {% for option in question.options_set.all %}
-                                    <li class="choice-item p-3 border my-2">
-                                        <input type="{% if question.category == 'ss' %}radio{% elif question.category == 'ms' %}checkbox{% endif %}"
+                                    <li class="choice-item border my-2">
+                                        <input class="my-2"
+                                                type="{% if question.category == 'ss' %}radio{% elif question.category == 'ms' %}checkbox{% endif %}"
                                                id="option-{{ option.id }}"
                                                name="{{ question.id }}{% if question.category == 'ms' %}[]{% endif %}"
                                                value="{{ option.id }}"
