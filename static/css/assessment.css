@@ -48,19 +48,16 @@
     margin: 0;
 }
 
-.choice-item {
-    border-radius: 5px;
-}
-
 /* Common styles for choice items */
 .choice-item {
     display: flex;
     align-items: center;
     border: 1px solid #d1d1d1;
-    padding: 15px;
+    padding-left: 15px;
     margin-bottom: 10px;
     border-radius: 8px;
     transition: background-color 0.3s;
+    font-size: 1.2rem;
 }
 
 .choice-item:hover {
@@ -78,7 +75,7 @@
 /* Custom radio button and checkbox */
 .choice-item label {
     position: relative;
-    padding-left: 35px; /* Space for the custom square */
+    padding: 1rem 1rem 1rem 35px;
     width: 100%;
     cursor: pointer;
 }
