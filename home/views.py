@@ -101,3 +101,7 @@ def result(request, response_id):
 def guidelines(request, assessment_id):
     obj = get_object_or_404(Assessment, id=assessment_id)
     return render(request, 'home/guidelines.html', context={"assessment": obj})
+
+
+def result_download(request, response_id):
+    return None
