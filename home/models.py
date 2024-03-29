@@ -93,6 +93,7 @@ class Assessment(models.Model):
     cover_image = models.ImageField()
     guidelines = MDTextField(null=True, blank=True)
     consents = ArrayField(models.CharField(max_length=200, help_text="Comma seperated list of consents"), default=list)
+    result_guidelines = models.TextField()
 
     def __str__(self):
         return self.name

@@ -91,7 +91,8 @@ def result(request, response_id):
     context = {
         'result': result_data,
         'pages': result_pages,
-        'categories': categories
+        'categories': categories,
+        'guidelines': resp.assessment.result_guidelines
     }
 
     return render(request, 'home/result.html', context=context)
