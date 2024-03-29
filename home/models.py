@@ -1,5 +1,7 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models import Max, Sum
+from mdeditor.fields import MDTextField
 
 question_categories = (
     ('ss', 'Single Select'),
@@ -89,6 +91,8 @@ class Assessment(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     cover_image = models.ImageField()
+    guidelines = MDTextField(null=True, blank=True)
+    consents = ArrayField(models.CharField(max_length=200, help_text="Comma seperated list of consents"), default=list)
 
     def __str__(self):
         return self.name

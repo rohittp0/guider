@@ -36,6 +36,8 @@ DEFAULT_HTTP_PROTOCOL = "https"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 # Application definition
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 INSTALLED_APPS = [
     'jazzmin',
 
@@ -51,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.account',  # must
     'allauth.socialaccount',  # must
     'allauth.socialaccount.providers.google',  # new
+
+    'mdeditor',
 
     'home'
 ]

@@ -95,3 +95,8 @@ def result(request, response_id):
     }
 
     return render(request, 'home/result.html', context=context)
+
+
+def guidelines(request, assessment_id):
+    obj = get_object_or_404(Assessment, id=assessment_id)
+    return render(request, 'home/guidelines.html', context={"assessment": obj})

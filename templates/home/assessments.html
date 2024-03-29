@@ -21,7 +21,11 @@
           </span>
         </span>
                 <div class="next-button-container">
-                    <a href="{% url 'assessment' assessment_id=assessment.id response_id=-1 %}">
+                    {% if assessment.guidelines %}
+                        <a href="{% url 'guidelines' assessment_id=assessment.id %}">
+                    {% else %}
+                        <a href="{% url 'assessment' assessment_id=assessment.id response_id=-1 %}"
+                    {% endif %}>
                         <button class="next-button-button button">
                             <span class="next-button-text"><span>Start</span></span>
                             <svg viewBox="0 0 1024 1024" class="next-button-icon">

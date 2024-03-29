@@ -1,0 +1,121 @@
+@font-face {
+    font-family: ClashDisplay;
+    src: url(/static/res/ClashDisplay-Variable.ttf);
+}
+
+body {
+    font-family: "DM Sans", monospace;
+    color: white;
+}
+
+.border-top {
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.border-left {
+    border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.border-right {
+    border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.chart-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.text-content {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.text-06 {
+    font-stretch: 100%;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.h {
+    font-weight: 400;
+    font-family: ClashDisplay, "Open Sans", sans-serif;
+}
+
+.h.h1 {
+    font-size: 5rem;
+}
+
+.h.h2 {
+    font-size: 3.5rem;
+}
+
+.h.h3 {
+    font-size: 2rem;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.suggestion-card {
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    justify-content: space-between;
+    transition: border .15s ease, background .15s ease;
+    width: 100%;
+}
+
+.page-description {
+    font-size: 1.1rem;
+    text-align: justify;
+    padding: 0 2rem 0 0;
+}
+
+.overall-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-element {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5rem solid rgb(58 76 88);
+    border-right: 1px solid rgb(16 190 210);
+}
+
+.progress-element.filled-bar {
+    border-bottom-color: rgb(16 190 210);
+}
+
+.text-right {
+    text-align: right;
+}
+
+#google_translate_element {
+    left: unset;
+    right: 10px;
+    filter: invert();
+}
+
+@media (max-width: 400px) {
+    .overall-container {
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 2em;
+    }
+}

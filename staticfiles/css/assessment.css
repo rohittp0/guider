@@ -1,0 +1,147 @@
+.error-banner {
+    color: #f8494a;
+    background: rgba(255, 0, 0, 0.1);
+    border-bottom: crimson 1px solid;
+}
+
+.gradient-background {
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(45deg, #f6d365, #fda085, #fbc2eb, #a6c1ee, #e2eecb);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite alternate-reverse;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 50% 50%;
+    }
+    50% {
+        background-position: 90% 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+.caret-container {
+    display: grid;
+    grid-column-gap: 40px;
+}
+
+.caret-nav {
+    background-image: url(/static/res/nav_caret.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: auto 110%;
+    padding: 16px 0 16px 24px;
+    opacity: 0.6;
+}
+
+.caret-nav:nth-child(1) {
+    background-image: unset;
+}
+
+.choice-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Common styles for choice items */
+.choice-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d1d1;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    font-size: 1.2rem;
+}
+
+.choice-item:hover {
+    background-color: #f8f8f8;
+}
+
+/* Hide the default radio button and checkbox */
+.choice-item input[type="radio"],
+.choice-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+/* Custom radio button and checkbox */
+.choice-item label {
+    position: relative;
+    padding: 1rem 1rem 1rem 35px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.choice-item label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Size of the custom square */
+    height: 20px; /* Size of the custom square */
+    border: 2px solid #d1d1d1;
+    border-radius: 4px; /* Slight rounding of corners for squares */
+    background-color: #fff;
+}
+
+.choice-item input[type="radio"] + label::before {
+    border-radius: 50%; /* Make the square a circle for radio buttons */
+}
+
+/* Custom checked state for radio button */
+.choice-item input[type="radio"]:checked + label::before {
+    background-color: yellowgreen; /* Color when radio is selected */
+}
+
+/* Custom checked state for checkbox */
+.choice-item input[type="checkbox"]:checked + label::before {
+    /* Add a checkmark or other indicator */
+    content: '✓';
+    color: yellowgreen;
+    font-size: 16px; /* Adjust size as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+}
+
+.info-container .info-button {
+    border-radius: 50%;
+    background-color: lightblue;
+    color: var(--dl-color-secondary-700);
+    padding: 0.1rem 0.65rem;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.info-container .info-text {
+    display: none;
+    font-size: 14px;
+    color: var(--dl-color-secondary-700);
+}
+
+.info-container .info-button:hover {
+    background-color: var(--dl-color-blue-500);
+    color: white;
+}
+
+.info-container:has(.info-button:focus) .info-text {
+    display: block;
+}
