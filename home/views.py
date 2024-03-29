@@ -89,6 +89,7 @@ def result(request, response_id):
     categories = resp.assessment.category_set.order_by("points").all()
 
     context = {
+        'response_id': response_id,
         'result': result_data,
         'pages': result_pages,
         'categories': categories,
