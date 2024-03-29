@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/assessment.css' %}">
+    <style>
+        #google_translate_element {
+            display: none;
+        }
+
+        * {
+            -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
+            color-adjust: exact !important; /* Firefox 48 – 96 */
+            print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% block nav %}{% endblock %}
+
+    {% for page in pages %}
+        <div class="row">
+            <div class="col-12 p-lg-0">
+                <div class="w-100 bg-primary-500">
+                    <div class="py-4 text-white">
+                        <h1 class="px-5">{{ page.title }}</h1>
+                    </div>
+                </div>
+                {% for question, answer in page.questions %}
+                    <div class="border-bottom p-5">
+                        <p class="mb-4">Question {{ forloop.counter }} </p>
+                        <h3 class="mb-4">{{ question.question_text }}</h3>
+
+                        {% if question.category == "sa" or question.category == "la" %}
+                            <p style="font-size: 1.4rem;" class="px-3">{{ answer }}</p>
+                        {% elif question.category == "tf" %}
+                            <!-- Structure for true/false -->
+                            <div class="choice-item p-3 border my-2">
+                                <input type="checkbox" id="option-true-{{ question.id }}" name="{{ question.id }}"
+                                       value="true" {% if answer == "True" %}checked{% endif %}>
+                                <label for="option-true-{{ question.id }}">Yes</label>
+                            </div>
+                        {% else %}
+                            <!-- Combined structure for 'ss' and 'ms' -->
+                            <ul class="choice-list">
+                                {% for option in question.options_set.all %}
+                                    <li class="choice-item border my-2">
+                                        <input class="my-2"
+                                               type="{% if question.category == 'ss' %}radio{% elif question.category == 'ms' %}checkbox{% endif %}"
+                                               id="option-{{ option.id }}"
+                                               name="{{ question.id }}{% if question.category == 'ms' %}[]{% endif %}"
+                                               value="{{ option.id }}"
+                                               {% if option.id|stringformat:"s" in answer %}checked{% endif %}>
+                                        <label for="option-{{ option.id }}">{{ option.option_text }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
+
+{% block script %}
+    <script>
+        // Print the page
+        window.print();
+    </script>
+{% endblock %}

@@ -17,7 +17,7 @@ def try_saving_response(request: WSGIRequest, resp: Response):
             answer = answer == 'true'
 
         if not answer:
-            raise ValueError(f'Question {i+1} was not answered')
+            raise ValueError(f'Question {i + 1} was not answered')
 
         ans = Answer.objects.get_or_create(question=question, response=resp)[0]
         ans.answer_text = answer
@@ -104,4 +104,25 @@ def guidelines(request, assessment_id):
 
 
 def result_download(request, response_id):
-    return None
+    response = get_object_or_404(Response, id=response_id)
+
+    pages = []
+
+    for page in response.assessment.formpage_set.all():
+        questions = []
+
+        for question in page.questions.all():
+            try:
+                answer = response.answer_set.get(question=question)
+                answer = answer.answer_text if question.category != 'ms' else answer.answer_text.split(',')
+                questions.append((question, answer))
+            except Answer.DoesNotExist:
+                continue
+
+        pages.append({
+            'questions': questions,
+            'title': page.title,
+            'description': page.description
+        })
+
+    return render(request, 'home/result_download.html', context={'pages': pages})
