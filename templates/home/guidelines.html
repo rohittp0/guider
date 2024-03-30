@@ -20,8 +20,8 @@
             {% for consent in assessment.consents %}
                 <div class="row" style="padding-left: 5px;">
                     <div class="col-12">
-                        <input id="accept" type="checkbox" required>
-                        <label for="accept">{{ consent }}</label>
+                        <input id="accept-{{ forloop.counter }}" type="checkbox" required>
+                        <label for="accept-{{ forloop.counter }}">{{ consent }}</label>
                     </div>
                 </div>
             {% endfor %}
